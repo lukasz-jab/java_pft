@@ -13,7 +13,7 @@ public class HelperBase {
     protected ChromeDriver wd;
 
     public HelperBase(ChromeDriver wd) {
-        this.wd=wd;
+        this.wd = wd;
     }
 
     protected void click(By locator) {
