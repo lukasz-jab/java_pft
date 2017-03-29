@@ -42,5 +42,13 @@ public class GroupHelper extends HelperBase {
         }
     }
 
+    public void editGroup(){
+        click(By.xpath("//input[@name='edit']"));
+    }
+
+    public void submitEditGroup(){
+        click(By.xpath("//input[@name='update']"));
+    }
+
 
 }
