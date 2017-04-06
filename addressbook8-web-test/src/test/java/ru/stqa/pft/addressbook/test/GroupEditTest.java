@@ -11,6 +11,9 @@ public class GroupEditTest extends TestBase {
     @Test
     public void groupEditTest() {
         app.getNavigationHelper().gotoGroupPage();
+        if (! app.getGroupHelper().isThereAGroup()){
+            app.getGroupHelper().createGroup(new GroupData("group name 2", null, null));
+        }
         app.getGroupHelper().selectGroup();
         app.getGroupHelper().editGroup();
         app.getGroupHelper().fillGroupForm(new GroupData("new group name","new group header","new group footer"));

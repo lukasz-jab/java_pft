@@ -27,11 +27,11 @@ public class ContactHelper extends HelperBase {
         type(By.xpath("//input[@name='firstname']"), contactData.getFirstName());
         type(By.xpath("//input[@name='lastname']"), contactData.getLastName());
         type(By.xpath("//textarea[@name='address']"), contactData.getAddress());
-        if (creation){
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-        }else {
-            Assert.assertFalse(isElementPresent(By.name("new_group")));
-        }
+        //if (creation){
+          //  new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+        //}else {
+          //  Assert.assertFalse(isElementPresent(By.name("new_group")));
+        //}
 
     }
 
@@ -54,4 +54,12 @@ public class ContactHelper extends HelperBase {
     }
 
 
+    public void createContact(ContactData contact) {
+        fillContactForm(new ContactData("Grzegorz", "Brzęczyszczykiewicz", "Poland",null),true);
+        submitContactCreation();
+    }
+
+    public boolean isThereAContact() {
+        return isElementPresent(By.xpath("//input[@name='selected[]']"));
+    }
 }

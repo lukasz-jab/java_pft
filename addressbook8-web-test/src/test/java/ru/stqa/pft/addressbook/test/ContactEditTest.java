@@ -11,6 +11,10 @@ public class ContactEditTest extends TestBase {
     @Test
     public void contactEditTest() {
         app.getNavigationHelper().gotoMainPage();
+        if (! app.getContactHelper().isThereAContact()){
+            app.getNavigationHelper().gotoContactAddPage();
+            app.getContactHelper().createContact(new ContactData("Grzegorz", "Brzęczyszczykiewicz", "Poland",null));
+        }
         app.getContactHelper().editContact();
         app.getContactHelper().fillContactForm(new ContactData("new name","new lastname","new address",null),false);
         app.getContactHelper().submitEditConact();
