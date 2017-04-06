@@ -13,7 +13,7 @@ public class ContactCreationTest extends TestBase {
     public void testContactCreation() {
 
         app.getNavigationHelper().gotoContactAddPage();
-        app.getContactHelper().fillContactForm(new ContactData("Grzegorz", "Brzęczyszczykiewicz", "Poland"));
+        app.getContactHelper().fillContactForm(new ContactData("Grzegorz", "Brzęczyszczykiewicz", "Poland","group name 2"),true);
         app.getContactHelper().submitContactCreation();
         // app.getGroupHelper().returnTo - the application return with any click after few seconds
     }

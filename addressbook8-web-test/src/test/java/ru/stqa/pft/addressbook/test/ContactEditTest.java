@@ -12,7 +12,7 @@ public class ContactEditTest extends TestBase {
     public void contactEditTest() {
         app.getNavigationHelper().gotoMainPage();
         app.getContactHelper().editContact();
-        app.getContactHelper().fillContactForm(new ContactData("new name","new lastname","new address"));
+        app.getContactHelper().fillContactForm(new ContactData("new name","new lastname","new address",null),false);
         app.getContactHelper().submitEditConact();
     }
 }
