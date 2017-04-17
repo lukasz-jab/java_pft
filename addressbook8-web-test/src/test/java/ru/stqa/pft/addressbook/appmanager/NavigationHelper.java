@@ -32,6 +32,7 @@ public class NavigationHelper extends HelperBase {
 
     public void gotoMainPage() {
         if (isElementPresent(By.id("maintable"))) {
+
             return;
         }
         click(By.xpath("//div[@id='nav']//a[contains(text(),'home')]"));
