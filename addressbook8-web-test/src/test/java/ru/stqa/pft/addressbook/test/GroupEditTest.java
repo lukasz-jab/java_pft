@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.test;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
@@ -12,22 +13,24 @@ import java.util.List;
  */
 public class GroupEditTest extends TestBase {
 
+    @BeforeMethod
+    public void ensurePreconditions() {
+        app.goTo().group();
+        if (!app.group().isThereAGroup()) {
+            app.group().create(new GroupData().withName("group 1").withHeader("header 1").withFooter("footer 1"));
+        }
+    }
+
     @Test
     public void groupEditTest() {
-        app.getNavigationHelper().gotoGroupPage();
-        if (! app.getGroupHelper().isThereAGroup()){
-            app.getGroupHelper().createGroup(new GroupData("group name 2", null, null));
-        }
-        List<GroupData> before = app.getGroupHelper().getGroupList();
-        app.getGroupHelper().selectGroup(before.size()-1);
-        app.getGroupHelper().editGroup();
-        GroupData group=new GroupData(before.get(before.size()-1).getId(),"new group name","new group header","new group footer");
-        app.getGroupHelper().fillGroupForm(group);
-        app.getGroupHelper().submitEditGroup();
-        app.getGroupHelper().returnToGroupPage();
 
-        List<GroupData> after = app.getGroupHelper().getGroupList();
-        before.remove(before.size()-1);
+        List<GroupData> before = app.group().list();
+        int index = before.size() - 1;
+        GroupData group = new GroupData().withId(before.get(index).getId()).withName("new group name").withHeader("new group header").withFooter("new group footer");
+        app.group().modify(index, group);
+
+        List<GroupData> after = app.group().list();
+        before.remove(index);
         before.add(group);
         Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
 

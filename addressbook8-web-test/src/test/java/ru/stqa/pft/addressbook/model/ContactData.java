@@ -5,16 +5,29 @@ package ru.stqa.pft.addressbook.model;
  */
 public class ContactData {
 
-    private final String firstname;
-    private final String lastname;
-    private final String address;
+    private String firstname;
+    private String lastname;
+    private String address;
     private String group;
 
-    public ContactData(String firstname, String lastname, String address, String group) {
+    public ContactData withFirstname(String firstname) {
         this.firstname = firstname;
+        return this;
+    }
+
+    public ContactData withLastname(String lastname) {
         this.lastname = lastname;
+        return this;
+    }
+
+    public ContactData withAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
         this.group = group;
+        return this;
     }
 
     public String getFirstName() {

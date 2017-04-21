@@ -14,14 +14,15 @@ public class ContactCreationTest extends TestBase {
 
     @Test
     public void testContactCreation() {
-        app.getNavigationHelper().gotoMainPage();
-        List<ContactData> before = app.getContactHelper().getContactList();
-        app.getNavigationHelper().gotoContactAddPage();
-        ContactData contactAdded = new ContactData("Grzegorz", "Brzęczyszczykiewicz", "Poland", "group name 2");
-        app.getContactHelper().createContact(contactAdded);
-        app.getNavigationHelper().gotoMainPage();
+        app.goTo().mainPage();
+        List<ContactData> before = app.contact().list();
+        app.goTo().contactPage();
+        ContactData contactAdded = new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
+                .withAddress("Poland").withGroup(null);
+        app.contact().createContact(contactAdded);
+        app.goTo().mainPage();
 
-        List<ContactData> after = app.getContactHelper().getContactList();
+        List<ContactData> after = app.contact().list();
         before.add(contactAdded);
         before.stream().sorted((o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
         after.stream().sorted((o1, o2) -> o1.getLastName().compareTo((o2.getLastName())));
