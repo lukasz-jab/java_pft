@@ -13,6 +13,16 @@ public class ContactData {
     private String mobilePhone;
     private String workPhone;
     private String email;
+    private String allPhones;
+
+    public String getAllPhones() {
+        return allPhones;
+    }
+
+    public ContactData withtAllPhones(String allPhones) {
+        this.allPhones = allPhones;
+        return this;
+    }
 
     public String getHomePhone() {
         return homePhone;

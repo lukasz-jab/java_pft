@@ -103,15 +103,11 @@ public class ContactHelper extends HelperBase {
                 int id = Integer.parseInt(element.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//input"))
                         .getAttribute("value"));
                 String phones = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[6]")).getText();
-                String[] allPhones = phones.split("\n");
-                String homePhone = allPhones[0];
-                String mobilePhone = allPhones[1];
-                String workPhone = allPhones[2];
+                String allPhones = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[6]")).getText();
                 String email = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[5]")).getText();
 
                 contactCache.add(new ContactData().withId(id).withFirstname(name).withLastname(lastName).withAddress(country)
-                        .withGroup(null).withHomePhone(homePhone).withMobilePhone(mobilePhone).withWorkPhone(workPhone)
-                        .withEmail(email));
+                        .withGroup(null).withtAllPhones(allPhones).withEmail(email));
 
                 //eliminate first element-ramka
                 if (i < elementContactData.size()) {
