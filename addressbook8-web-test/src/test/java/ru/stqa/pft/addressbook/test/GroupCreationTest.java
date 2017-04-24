@@ -19,5 +19,17 @@ public class GroupCreationTest extends TestBase {
         assertThat(before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))
                 , equalTo(after));
     }
+    @Test
+    public void testBadGroupCreation() {
+        app.goTo().group();
+        Groups before = app.group().g_all();
+        GroupData group = new GroupData().withName("group 1'''").withHeader("header 1").withFooter("footer 1");
+                                                   // not authorized sign: '
+        app.group().create(group.withId(0));
+        assertThat(before, equalTo(app.group().count()));
+        Groups after = app.group().g_all();
+        assertThat(before, equalTo(after));
+    }
+
 
 }

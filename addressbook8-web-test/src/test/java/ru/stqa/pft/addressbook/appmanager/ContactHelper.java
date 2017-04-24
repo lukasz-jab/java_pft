@@ -17,6 +17,12 @@ public class ContactHelper extends HelperBase {
         super(wd);
     }
 
+    public void getPhonesFromMainPage(int id) {
+        String phones = wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']/../../td[6]")).getText();
+        String[] allPhones = phones.split("\n");
+
+
+    }
 
     public void submitContactCreation() {
         click(By.xpath("//input[@name='submit']"));
@@ -38,21 +44,28 @@ public class ContactHelper extends HelperBase {
         editContact();
         fillContactForm((contactEdited), false);
         submitEditConact();
+        contactCache = null;
     }
 
     public void deleteSelectedContact() {
         click(By.xpath("//input[@value='Delete']"));
         wd.switchTo().alert().accept();
+        contactCache = null;
 
     }
 
     public void delete(ContactData contact) {
         selectContactById(contact.getId());
         deleteSelectedContact();
+        contactCache = null;
     }
 
-    private void selectContactById(int id) {
+    public void selectContactById(int id) {
         wd.findElement(By.xpath("//input[@value='" + id + "']")).click();
+    }
+
+    public void selectContactWithPhonesById(int id) {
+        wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
     }
 
     public void editContact() {
@@ -73,24 +86,53 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.xpath("//input[@name='selected[]']"));
     }
 
+    private Contacts contactCache = null;
+
     public Contacts c_all() {
-        List<WebElement> elementContactData = wd.findElements(By.xpath("//table[@id='maintable']//tr"));
-        Contacts contactData = new Contacts();
-        int i = 2;
-        for (WebElement element : elementContactData) {
-            String lastName = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[2]")).getText();
-            String name = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[3]")).getText();
-            String country = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[4]")).getText();
-            int id = Integer.parseInt(element.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//input"))
-                    .getAttribute("value"));
-            contactData.add(new ContactData().withId(id).withFirstname(name).withLastname(lastName).withAddress(country)
-                    .withGroup(null));
-            // System.out.println(contactData.get(i).getFirstName()+" "+contactData.get(i).getLastName()+" "+contactData.get(i).getAddress());
-            //eliminate first element-ramka
-            if (i < elementContactData.size()) {
-                i++;
-            } else continue;
+        if (!(contactCache == null)) {
+            return new Contacts(contactCache);
+            // return copy of cache
+        } else {
+            List<WebElement> elementContactData = wd.findElements(By.xpath("//table[@id='maintable']//tr"));
+            Contacts contactCache = new Contacts();
+            int i = 2;
+            for (WebElement element : elementContactData) {
+                String lastName = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[2]")).getText();
+                String name = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[3]")).getText();
+                String country = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[4]")).getText();
+                int id = Integer.parseInt(element.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//input"))
+                        .getAttribute("value"));
+                String phones = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[6]")).getText();
+                String[] allPhones = phones.split("\n");
+                String homePhone = allPhones[0];
+                String mobilePhone = allPhones[1];
+                String workPhone = allPhones[2];
+                String email = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[5]")).getText();
+
+                contactCache.add(new ContactData().withId(id).withFirstname(name).withLastname(lastName).withAddress(country)
+                        .withGroup(null).withHomePhone(homePhone).withMobilePhone(mobilePhone).withWorkPhone(workPhone)
+                        .withEmail(email));
+
+                //eliminate first element-ramka
+                if (i < elementContactData.size()) {
+                    i++;
+                } else continue;
+            }
+            return new Contacts(contactCache);
         }
-        return contactData;
     }
+
+    public ContactData getPhonesFromContactPage(int id) {
+        String lastName = wd.findElement(By.xpath("//input[@name='lastname']")).getAttribute("value");
+        String name = wd.findElement(By.xpath("//input[@name='firstname']")).getAttribute("value");
+        String country = wd.findElement(By.xpath("//textarea[@name='address']")).getAttribute("value");
+        String homePhone = wd.findElement(By.xpath("//input[@name='home']")).getAttribute("value");
+        String mobilePhone = wd.findElement(By.xpath("//input[@name='mobile']")).getAttribute("value");
+        String workPhone = wd.findElement(By.xpath("//input[@name='work']")).getAttribute("value");
+        String email = wd.findElement(By.xpath("//input[@name='email']")).getAttribute("value");
+        return new ContactData().withId(id).withFirstname(name).withLastname(lastName)
+                .withAddress(country).withHomePhone(homePhone).withMobilePhone(mobilePhone).withWorkPhone(workPhone)
+                .withEmail(email);
+    }
+
 }
