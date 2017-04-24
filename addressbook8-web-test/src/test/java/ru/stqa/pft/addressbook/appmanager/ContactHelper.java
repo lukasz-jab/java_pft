@@ -4,8 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,8 +46,13 @@ public class ContactHelper extends HelperBase {
 
     }
 
-    public void selectContact() {
-        click(By.xpath("//input[@name='selected[]']"));
+    public void delete(ContactData contact) {
+        selectContactById(contact.getId());
+        deleteSelectedContact();
+    }
+
+    private void selectContactById(int id) {
+        wd.findElement(By.xpath("//input[@value='" + id + "']")).click();
     }
 
     public void editContact() {
@@ -55,12 +60,11 @@ public class ContactHelper extends HelperBase {
     }
 
     public void submitEditConact() {
-        click(By.xpath("//input[@name='update']"));
+        click(By.xpath("//input[@value='Update']"));
     }
 
-
     public void createContact(ContactData contact) {
-        fillContactForm(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
+        fillContactForm(new ContactData().withId(0).withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
                 .withAddress("Poland").withGroup(null), true);
         submitContactCreation();
     }
@@ -69,18 +73,23 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.xpath("//input[@name='selected[]']"));
     }
 
-    public List<ContactData> list() {
-        List<WebElement> elementContactData = wd.findElements(By.xpath("//table[@id='maintable']//tr//td[2]"));
-        List<ContactData> contactData = new ArrayList<>();
-        int i = 0;
+    public Contacts c_all() {
+        List<WebElement> elementContactData = wd.findElements(By.xpath("//table[@id='maintable']//tr"));
+        Contacts contactData = new Contacts();
+        int i = 2;
         for (WebElement element : elementContactData) {
-            String lastName = wd.findElement(By.xpath("//table[@id='maintable']//tr//td[2]")).getText();
-            String name = wd.findElement(By.xpath("//table[@id='maintable']//tr//td[3]")).getText();
-            String country = wd.findElement(By.xpath("//table[@id='maintable']//tr//td[4]")).getText();
-            contactData.add(i, (new ContactData().withFirstname(name).withLastname(lastName).withAddress(country)
-                    .withGroup(null)));
+            String lastName = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[2]")).getText();
+            String name = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[3]")).getText();
+            String country = wd.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//td[4]")).getText();
+            int id = Integer.parseInt(element.findElement(By.xpath("//table[@id='maintable']//tr[" + i + "]//input"))
+                    .getAttribute("value"));
+            contactData.add(new ContactData().withId(id).withFirstname(name).withLastname(lastName).withAddress(country)
+                    .withGroup(null));
             // System.out.println(contactData.get(i).getFirstName()+" "+contactData.get(i).getLastName()+" "+contactData.get(i).getAddress());
-            i++;
+            //eliminate first element-ramka
+            if (i < elementContactData.size()) {
+                i++;
+            } else continue;
         }
         return contactData;
     }

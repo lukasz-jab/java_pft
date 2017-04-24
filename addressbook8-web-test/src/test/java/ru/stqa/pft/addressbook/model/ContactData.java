@@ -4,11 +4,16 @@ package ru.stqa.pft.addressbook.model;
  * Created by luk on 2017-03-27.
  */
 public class ContactData {
-
+    private int id;
     private String firstname;
     private String lastname;
     private String address;
     private String group;
+
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
 
     public ContactData withFirstname(String firstname) {
         this.firstname = firstname;
@@ -30,6 +35,10 @@ public class ContactData {
         return this;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstname;
     }
@@ -49,7 +58,8 @@ public class ContactData {
     @Override
     public String toString() {
         return "ContactData{" +
-                "firstname='" + firstname + '\'' +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", address='" + address + '\'' +
                 ", group='" + group + '\'' +
@@ -63,13 +73,15 @@ public class ContactData {
 
         ContactData that = (ContactData) o;
 
+        if (id != that.id) return false;
         if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
         return lastname != null ? lastname.equals(that.lastname) : that.lastname == null;
     }
 
     @Override
     public int hashCode() {
-        int result = firstname != null ? firstname.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         return result;
     }

@@ -1,41 +1,42 @@
 package ru.stqa.pft.addressbook.test;
 
-import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Created by luk on 2017-03-29.
  */
 public class ContactEditTest extends TestBase {
+    @BeforeMethod
+    public void ensurePreconditions() {
+        app.goTo().mainPage();
+        if (!app.contact().isThereAContact()) {
+            app.goTo().contactPage();
+            app.contact().createContact(new ContactData().withId(0).withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
+                    .withAddress("Poland").withGroup(null));
+        }
+    }
 
     @Test
     public void contactEditTest() {
         app.goTo().mainPage();
-        if (app.contact().list().size() == 0) {
-            app.goTo().contactPage();
-            app.contact().createContact(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
-                    .withAddress("Poland").withGroup(null));
-            app.goTo().mainPage();
-        }
-        List<ContactData> before = app.contact().list();
-        ContactData contactEdited = new ContactData().withFirstname("new name").withLastname("new lastname")
-                .withAddress("new address").withGroup(null);
+        Contacts before = app.contact().c_all();
+        ContactData contactEdited = before.iterator().next();
+        int id = contactEdited.getId();
+        before.remove(contactEdited);
         app.contact().modify(contactEdited);
         app.goTo().mainPage();
+        System.out.println(id);
+        System.out.println(contactEdited.withId(id));
 
-        List<ContactData> after = app.contact().list();
-        System.out.println("before size: " + before.size());
-        before.remove(0);
-        before.add(contactEdited);
-        System.out.println("before size: after change: " + before.size());
-        System.out.println("after size: " + after.size());
-        before.stream().sorted((o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
-        after.stream().sorted((o1, o2) -> o1.getLastName().compareTo((o2.getLastName())));
-        Assert.assertEquals(before, after);
-        // Contact dissaeper after click "UPDATE" - test fall !!!
+        Contacts after = app.contact().c_all();
+
+        assertThat(before.withAdded(contactEdited.withId(id)), equalTo(after));
     }
 
 }
