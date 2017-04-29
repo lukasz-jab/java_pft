@@ -1,0 +1,29 @@
+<list>
+  <contact>
+    <firstname>Name2</firstname>
+    <lastname>Lastname3</lastname>
+    <address>Address 4</address>
+    <homePhone>504974</homePhone>
+    <mobilePhone>967582</mobilePhone>
+    <workPhone>261051</workPhone>
+    <photo>src\test\resources\s.jpg</photo>
+  </contact>
+  <contact>
+    <firstname>Name6</firstname>
+    <lastname>Lastname2</lastname>
+    <address>Address 7</address>
+    <homePhone>409881</homePhone>
+    <mobilePhone>53436</mobilePhone>
+    <workPhone>844275</workPhone>
+    <photo>src\test\resources\s.jpg</photo>
+  </contact>
+  <contact>
+    <firstname>Name8</firstname>
+    <lastname>Lastname6</lastname>
+    <address>Address 9</address>
+    <homePhone>568979</homePhone>
+    <mobilePhone>358662</mobilePhone>
+    <workPhone>228808</workPhone>
+    <photo>src\test\resources\s.jpg</photo>
+  </contact>
+</list>

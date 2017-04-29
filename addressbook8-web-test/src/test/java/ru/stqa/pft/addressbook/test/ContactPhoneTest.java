@@ -67,7 +67,7 @@ public class ContactPhoneTest extends TestBase {
         Arrays.sort(datailContact);
 
         assertThat(editContact, equalTo(datailContact));
-        
+
     }
 
 }
