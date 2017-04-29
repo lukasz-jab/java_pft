@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class GroupHelper extends HelperBase {
 
+    private Groups groupCache = null;
+
     public GroupHelper(WebDriver wd) {
         super(wd);
     }
@@ -30,7 +32,6 @@ public class GroupHelper extends HelperBase {
         type(By.name("group_header"), groupData.getHeader());
         type(By.name("group_footer"), groupData.getFooter());
     }
-
 
     public void initGroupCreation() {
         click(By.name("new"));
@@ -60,12 +61,11 @@ public class GroupHelper extends HelperBase {
         click(By.xpath("//input[@name='update']"));
     }
 
-
     public void create(GroupData group) {
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
-        groupCache=null;
+        groupCache = null;
         returnToGroupPage();
     }
 
@@ -74,14 +74,14 @@ public class GroupHelper extends HelperBase {
         editGroup();
         fillGroupForm(group);
         submitEditGroup();
-        groupCache=null;
+        groupCache = null;
         returnToGroupPage();
     }
 
     public void delete(GroupData deletedGroup) {
         selectById(deletedGroup.getId());
         deleteSelectedGroups();
-        groupCache=null;
+        groupCache = null;
         returnToGroupPage();
 
     }
@@ -93,8 +93,6 @@ public class GroupHelper extends HelperBase {
     public int count() {
         return wd.findElements(By.cssSelector("span.group")).size();
     }
-
-    private Groups groupCache = null;
 
     public Groups g_all() {
         if (!(groupCache == null)) {

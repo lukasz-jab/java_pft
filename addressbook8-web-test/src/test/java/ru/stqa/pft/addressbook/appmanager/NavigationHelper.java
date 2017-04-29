@@ -13,28 +13,28 @@ public class NavigationHelper extends HelperBase {
     }
 
     public void group() {
-        if (isElementPresent(By.tagName("h1"))
-                && (wd.findElement(By.tagName("h1")).getText().equals("Groups"))
-                && (isElementPresent(By.name("new")))) {
-            return;
-        }
+        //  if (isElementPresent(By.tagName("h1"))
+        //        && (wd.findElement(By.tagName("h1")).getText().equals("Groups"))
+        //      && (isElementPresent(By.name("new")))) {
+        // return;
+        //}
         click(By.linkText("groups"));
 
 
     }
 
     public void contactPage() {
-        if (wd.findElement(By.tagName("h1")).getText().equals("Edit / add address book entry")) {
-            return;
-        }
+        //  if (wd.findElement(By.tagName("h1")).getText().equals("Edit / add address book entry")) {
+        //    return;
+        //}
         click(By.linkText("add new"));
     }
 
     public void mainPage() {
-        if (isElementPresent(By.id("maintable"))) {
+        // if (isElementPresent(By.id("maintable"))) {
 
-            return;
-        }
+        //   return;
+        //}
         click(By.xpath("//div[@id='nav']//a[contains(text(),'home')]"));
     }
 }

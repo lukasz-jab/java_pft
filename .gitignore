@@ -14,3 +14,4 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 .idea/workspace.xml
 sandbox/src/main/java/ru/stqa/pft/sandbox/Primes.java
+addressbook8-web-test/debug.log
