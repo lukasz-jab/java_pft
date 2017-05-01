@@ -37,13 +37,13 @@ public class ContactDataGenerator {
     }
 
     private static void saveAsCSV(List<ContactData> contacts, File file) throws IOException {
-        Writer writer = new FileWriter(file);
-        for (ContactData contact : contacts) {
-            writer.write(contact.getFirstName() + "," + contact.getLastName() + "," + contact.getAddress()
-                    + "," + contact.getHomePhone() + "," + contact.getMobilePhone() + "," + contact.getWorkPhone()
-                    + "," + contact.getPhoto() + String.format("\n"));
+        try (Writer writer = new FileWriter(file)) {
+            for (ContactData contact : contacts) {
+                writer.write(contact.getFirstName() + "," + contact.getLastName() + "," + contact.getAddress()
+                        + "," + contact.getHomePhone() + "," + contact.getMobilePhone() + "," + contact.getWorkPhone()
+                        + "," + contact.getPhoto() + String.format("\n"));
+            }
         }
-        writer.close();
     }
 
     private static List<ContactData> generateContacts(int count) {
@@ -73,9 +73,9 @@ public class ContactDataGenerator {
     private void saveAsJSON(List<ContactData> contacts, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         String jContact = gson.toJson(contacts);
-        Writer writer = new FileWriter(file);
-        writer.write(jContact);
-        writer.close();
+        try (Writer writer = new FileWriter(file)) {
+            writer.write(jContact);
+        }
     }
 
     private void saveAsXML(List<ContactData> contacts, File file) throws IOException {
@@ -83,8 +83,8 @@ public class ContactDataGenerator {
         //xstream.alias("contact", ContactData.class);
         xstream.processAnnotations(ContactData.class);
         String xml = xstream.toXML(contacts);
-        Writer writer = new FileWriter(file);
-        writer.write(xml);
-        writer.close();
+        try (Writer writer = new FileWriter(file)) {
+            writer.write(xml);
+        }
     }
 }
