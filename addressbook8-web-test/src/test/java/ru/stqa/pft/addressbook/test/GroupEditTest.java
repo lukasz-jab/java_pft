@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -12,7 +14,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by luk on 2017-03-29.
  */
 public class GroupEditTest extends TestBase {
-
+    Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+    //slf4j
     @BeforeMethod
     public void ensurePreconditions() {
         app.goTo().group();
@@ -23,7 +26,6 @@ public class GroupEditTest extends TestBase {
 
     @Test
     public void groupEditTest() {
-
         Groups before = app.group().g_all();
         GroupData modifiedGroup = before.iterator().next();
         GroupData group = new GroupData().withId(modifiedGroup.getId()).withName("new group name").withHeader("new group header").withFooter("new group footer");

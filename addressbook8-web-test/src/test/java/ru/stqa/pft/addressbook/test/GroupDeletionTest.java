@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -10,7 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class GroupDeletionTest extends TestBase {
-
+    Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+    //slf4j
     @BeforeMethod
     private void ensurePreconditions() {
         app.goTo().group();

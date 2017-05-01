@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -12,6 +14,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by luk on 2017-03-29.
  */
 public class ContactEditTest extends TestBase {
+    Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+    //slf4j
     @BeforeMethod
     public void ensurePreconditions() {
         app.goTo().mainPage();
@@ -31,11 +35,7 @@ public class ContactEditTest extends TestBase {
         before.remove(contactEdited);
         app.contact().modify(contactEdited);
         app.goTo().mainPage();
-        System.out.println(id);
-        System.out.println(contactEdited.withId(id));
-
         Contacts after = app.contact().c_all();
-
         assertThat(before.withAdded(contactEdited.withId(id)), equalTo(after));
     }
 

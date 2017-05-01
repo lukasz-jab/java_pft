@@ -3,6 +3,8 @@ package ru.stqa.pft.addressbook.test;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -60,7 +62,6 @@ public class ContactCreationTest extends TestBase {
 
     @Test(dataProvider = "validContactFromJSON")
     public void testContactCreation(ContactData contactAdded) {
-        File photo = new File("src/test/resources/skanowanie0001.jpg");
         app.goTo().mainPage();
         Contacts before = app.contact().c_all();
         app.goTo().contactPage();

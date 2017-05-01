@@ -15,3 +15,7 @@ gradle-app.setting
 .idea/workspace.xml
 sandbox/src/main/java/ru/stqa/pft/sandbox/Primes.java
 addressbook8-web-test/debug.log
+*.iml
+*.iml
+*.xml
+*.log

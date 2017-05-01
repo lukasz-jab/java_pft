@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -14,6 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by luk on 2017-04-24.
  */
 public class ContactPhoneTest extends TestBase {
+    Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+    //slf4j
     public static String cleaned(String phone) {
         return phone.replaceAll("\\s", "").replaceAll("[-()]", "")
                 .replaceAll("H:", "").replaceAll("M:", "").replaceAll("W:", "").replaceAll("F:", "");
@@ -32,6 +36,7 @@ public class ContactPhoneTest extends TestBase {
 
     @Test(enabled = false)
     public void test() {
+        logger.info("Start ContactPhoneTest");
         app.goTo().mainPage();
         ContactData randomContact = app.contact().c_all().iterator().next();
         app.contact().selectContactWithPhonesById(randomContact.getId());
@@ -40,6 +45,7 @@ public class ContactPhoneTest extends TestBase {
         assertThat(randomContact.getAllPhones(), equalTo(mergePhones(editPageRandomContact)));
         assertThat(randomContact.getAddress(), equalTo(editPageRandomContact.getAddress()));
         assertThat(randomContact.getEmail(), equalTo(editPageRandomContact.getEmail()));
+        logger.info("Stop ContactPhoneTest");
     }
 
     private String mergePhones(ContactData contact) {
@@ -58,16 +64,11 @@ public class ContactPhoneTest extends TestBase {
         app.goTo().mainPage();
         String contactfromDetailPage = app.contact().getDetailPageData(randomContact.getId());
 
-        System.out.println(cleaned(contactFromEditPage));
-        System.out.println(cleaned(contactfromDetailPage));
-
         char[] editContact = cleaned(contactFromEditPage).toCharArray();
         char[] datailContact = cleaned(contactfromDetailPage).toCharArray();
         Arrays.sort(editContact);
         Arrays.sort(datailContact);
-
         assertThat(editContact, equalTo(datailContact));
-
     }
 
 }
