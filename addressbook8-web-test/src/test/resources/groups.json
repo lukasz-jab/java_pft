@@ -1,0 +1,17 @@
+[
+  {
+    "name": "group nr 1",
+    "header": "header nr 1",
+    "footer": "footer nr 1"
+  },
+  {
+    "name": "group nr 2",
+    "header": "header nr 2",
+    "footer": "footer nr 2"
+  },
+  {
+    "name": "group nr 3",
+    "header": "header nr 3",
+    "footer": "footer nr 3"
+  }
+]
