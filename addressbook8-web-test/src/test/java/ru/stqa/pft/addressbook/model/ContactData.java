@@ -13,63 +13,67 @@ import java.io.File;
  */
 @XStreamAlias("contact")
 @Entity
-@Table(name="addressbook")
+@Table(name = "addressbook")
 public class ContactData {
 
     @XStreamOmitField
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     @Expose
-    @Column(name="firstname")
+    @Column(name = "firstname")
     private String firstname;
 
     @Expose
-    @Column(name="lastname")
+    @Column(name = "lastname")
     private String lastname;
 
     @Expose
-    @Column(name="address")
-    @Type(type="text")
+    @Column(name = "address")
+    @Type(type = "text")
     private String address;
 
     @Transient
     private String group;
 
     @Expose
-    @Column(name="home")
-    @Type(type="text")
+    @Column(name = "home")
+    @Type(type = "text")
     private String homePhone;
 
     @Expose
-    @Column(name="mobile")
-    @Type(type="text")
+    @Column(name = "mobile")
+    @Type(type = "text")
     private String mobilePhone;
 
     @Expose
-    @Column(name="work")
-    @Type(type="text")
+    @Column(name = "work")
+    @Type(type = "text")
     private String workPhone;
 
     @Expose
-    @Column(name="email")
-    @Type(type="text")
+    @Column(name = "email")
+    @Type(type = "text")
     private String email;
 
     @Transient
     private String allPhones;
 
-    @Column(name="photo")
-    @Type(type="text")
+    @Column(name = "photo")
+    @Type(type = "text")
     private String photo;
 
 
     public File getPhoto() {
-        return new File (photo);
+            if (photo != null) {
+                return new File(photo);
+            } else {
+                return null;
+            }
     }
 
-    public ContactData withPhoto(File photo) {
+       public ContactData withPhoto(File photo) {
         this.photo = photo.getPath();
         return this;
     }
@@ -79,9 +83,11 @@ public class ContactData {
         return allPhones;
     }
 
+
     public ContactData withtAllPhones(String allPhones) {
         this.allPhones = allPhones;
         return this;
+
     }
 
     public String getHomePhone() {
@@ -165,16 +171,6 @@ public class ContactData {
         return group;
     }
 
-    @Override
-    public String toString() {
-        return "ContactData{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", address='" + address + '\'' +
-                ", group='" + group + '\'' +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -185,8 +181,7 @@ public class ContactData {
 
         if (id != that.id) return false;
         if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
-        if (lastname != null ? !lastname.equals(that.lastname) : that.lastname != null) return false;
-        return address != null ? address.equals(that.address) : that.address == null;
+        return lastname != null ? lastname.equals(that.lastname) : that.lastname == null;
     }
 
     @Override
@@ -194,9 +189,26 @@ public class ContactData {
         int result = id;
         result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ContactData{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", address='" + address + '\'' +
+                ", group='" + group + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", workPhone='" + workPhone + '\'' +
+                ", email='" + email + '\'' +
+                ", allPhones='" + allPhones + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
+    }
+
 }
 
 

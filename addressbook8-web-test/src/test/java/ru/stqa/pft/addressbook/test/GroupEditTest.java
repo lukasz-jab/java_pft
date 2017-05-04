@@ -15,23 +15,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class GroupEditTest extends TestBase {
     Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+
     //slf4j
     @BeforeMethod
     public void ensurePreconditions() {
         app.goTo().group();
-        if (!app.group().isThereAGroup()) {
+        if (app.db().group().size() == 0) {
             app.group().create(new GroupData().withName("group 1").withHeader("header 1").withFooter("footer 1"));
         }
     }
 
     @Test
     public void groupEditTest() {
-        Groups before = app.group().g_all();
+        Groups before = app.db().group();
         GroupData modifiedGroup = before.iterator().next();
         GroupData group = new GroupData().withId(modifiedGroup.getId()).withName("new group name").withHeader("new group header").withFooter("new group footer");
         app.group().modify(group);
 
-        Groups after = app.group().g_all();
+        Groups after = app.db().group();
         assertThat(before.withOuth(modifiedGroup).withAdded(group), equalTo(after));
     }
 

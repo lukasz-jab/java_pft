@@ -25,6 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupCreationTest extends TestBase {
     Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+
     //slf4j
     @DataProvider
     public Iterator<Object[]> validGroupsFromJSON() throws IOException {
@@ -61,22 +62,21 @@ public class GroupCreationTest extends TestBase {
     @Test(dataProvider = "validGroupsFromJSON")
     public void testGroupCreation(GroupData group) {
         app.goTo().group();
-        Groups before = app.group().g_all();
+        Groups before = app.db().group();
         app.group().create(group);
-        assertThat(app.group().count(), equalTo(before.size() + 1));
-        Groups after = app.group().g_all();
+        Groups after = app.db().group();
         assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+        verifyGroupListInUI();
     }
 
-    @Test(enabled = false)
+    @Test(enabled = true)
     public void testBadGroupCreation() {
         app.goTo().group();
-        Groups before = app.group().g_all();
+        Groups before = app.db().group();
         GroupData group = new GroupData().withName("group 1'''").withHeader("header 1").withFooter("footer 1");
         // not authorized sign: '
         app.group().create(group);
-        assertThat(before.size(), equalTo(app.group().count()));
-        Groups after = app.group().g_all();
+        Groups after = app.db().group();
         assertThat(before, equalTo(after));
     }
 

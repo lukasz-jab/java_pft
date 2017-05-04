@@ -13,11 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupDeletionTest extends TestBase {
     Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+
     //slf4j
     @BeforeMethod
     private void ensurePreconditions() {
         app.goTo().group();
-        if (app.group().g_all().size() == 0) {
+        if (app.db().group().size() == 0) {
             app.group().create(new GroupData().withName("group 1").withHeader("header 1").withFooter("footer 1"));
         }
     }
@@ -25,10 +26,10 @@ public class GroupDeletionTest extends TestBase {
 
     @Test
     public void testGroupDeletion() {
-        Groups before = app.group().g_all();
+        Groups before = app.db().group();
         GroupData deletedGroup = before.iterator().next();
         app.group().delete(deletedGroup);
-        Groups after = app.group().g_all();
+        Groups after = app.db().group();
         assertThat(before.withOuth(deletedGroup), equalTo(after));
     }
 

@@ -19,13 +19,6 @@ public class ContactHelper extends HelperBase {
         super(wd);
     }
 
-    public void getPhonesFromMainPage(int id) {
-        String phones = wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']/../../td[6]")).getText();
-        String[] allPhones = phones.split("\n");
-
-
-    }
-
     public void submitContactCreation() {
         click(By.xpath("//input[@name='submit']"));
     }
@@ -37,7 +30,7 @@ public class ContactHelper extends HelperBase {
         type(By.xpath("//input[@name='home']"), contactData.getHomePhone());
         type(By.xpath("//input[@name='mobile']"), contactData.getMobilePhone());
         type(By.xpath("//input[@name='work']"), contactData.getWorkPhone());
-        attach(By.cssSelector("input[name=photo]"), contactData.getPhoto());
+        //attach(By.cssSelector("input[name=photo]"), contactData.getPhoto());
         //if (creation){
         // new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         //}else {
@@ -148,7 +141,6 @@ public class ContactHelper extends HelperBase {
         String contactEditText = "";
         for (WebElement contact : contactEditData) {
             contactEditText += contact.getAttribute("value");
-            //System.out.println(contact.getAttribute("value"));
         }
         String textarea = "";
         List<WebElement> textArea = wd.findElements(By.xpath("//textarea"));

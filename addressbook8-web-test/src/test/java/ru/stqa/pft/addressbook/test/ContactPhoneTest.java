@@ -18,18 +18,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ContactPhoneTest extends TestBase {
     Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
     //slf4j
+
     public static String cleaned(String phone) {
-        return phone.replaceAll("\\s", "").replaceAll("[-()]", "")
-                .replaceAll("H:", "").replaceAll("M:", "").replaceAll("W:", "").replaceAll("F:", "");
-        // to eliminated prefix in phone number in detail page"
+        return phone.replaceAll("\\s", "").replaceAll("[-()]", "");
     }
 
     @BeforeMethod
     public void ensurePredictions() {
         app.goTo().mainPage();
-        if (!app.contact().isThereAContact()) {
+        if (app.db().contacts().size() == 0) {
             app.goTo().contactPage();
-            app.contact().createContact(new ContactData().withId(0).withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
+            app.contact().createContact(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
                     .withAddress("Poland").withGroup(null));
         }
     }
@@ -38,11 +37,10 @@ public class ContactPhoneTest extends TestBase {
     public void test() {
         logger.info("Start ContactPhoneTest");
         app.goTo().mainPage();
-        ContactData randomContact = app.contact().c_all().iterator().next();
+        ContactData randomContact = app.db().contacts().iterator().next();
         app.contact().selectContactWithPhonesById(randomContact.getId());
         ContactData editPageRandomContact = app.contact().getPhonesFromContactPage(randomContact.getId());
-
-        assertThat(randomContact.getAllPhones(), equalTo(mergePhones(editPageRandomContact)));
+        assertThat(mergePhones(randomContact), equalTo(mergePhones(editPageRandomContact)));
         assertThat(randomContact.getAddress(), equalTo(editPageRandomContact.getAddress()));
         assertThat(randomContact.getEmail(), equalTo(editPageRandomContact.getEmail()));
         logger.info("Stop ContactPhoneTest");
@@ -53,22 +51,24 @@ public class ContactPhoneTest extends TestBase {
                 .stream().filter((s) -> !s.equals(""))
                 .map(ContactPhoneTest::cleaned)
                 .collect(Collectors.joining("\n"));
+    }
 
+    private String mergeContactData(ContactData contact) {
+        return Arrays.asList(contact.getFirstName(), contact.getLastName(), contact.getAddress(), "H:", contact.getHomePhone()
+                , "M:", contact.getMobilePhone(), "W:", contact.getWorkPhone(), contact.getEmail()
+        )
+                .stream().filter(s -> !s.equals(""))
+                .map(ContactPhoneTest::cleaned)
+                .collect(Collectors.joining());
     }
 
     @Test(enabled = true)
     public void testDetailContactPage() {
         app.goTo().mainPage();
-        ContactData randomContact = app.contact().c_all().iterator().next();
-        String contactFromEditPage = app.contact().getEditPageData(randomContact.getId());
+        ContactData randomContact = app.db().contacts().iterator().next();
         app.goTo().mainPage();
         String contactfromDetailPage = app.contact().getDetailPageData(randomContact.getId());
-
-        char[] editContact = cleaned(contactFromEditPage).toCharArray();
-        char[] datailContact = cleaned(contactfromDetailPage).toCharArray();
-        Arrays.sort(editContact);
-        Arrays.sort(datailContact);
-        assertThat(editContact, equalTo(datailContact));
+        assertThat(mergeContactData(randomContact), equalTo(cleaned(contactfromDetailPage)));
     }
 
 }

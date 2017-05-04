@@ -3,8 +3,6 @@ package ru.stqa.pft.addressbook.test;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -60,16 +58,17 @@ public class ContactCreationTest extends TestBase {
         }
     }
 
-    @Test(dataProvider = "validContactFromJSON")
+    @Test(dataProvider = "validContactFromXML")
     public void testContactCreation(ContactData contactAdded) {
         app.goTo().mainPage();
-        Contacts before = app.contact().c_all();
+        Contacts before = app.db().contacts();
         app.goTo().contactPage();
         app.contact().createContact(contactAdded);
         app.goTo().mainPage();
-        Contacts after = app.contact().c_all();
-        assertThat((before.size() + 1), equalTo(after.size()));
+        Contacts after = app.db().contacts();
+
         assertThat(after, equalTo(before.withAdded(contactAdded.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
+        verifyContactListInUI();
     }
 }
 

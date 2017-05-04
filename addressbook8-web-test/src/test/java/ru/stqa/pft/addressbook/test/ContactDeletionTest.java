@@ -16,12 +16,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ContactDeletionTest extends TestBase {
     Logger logger = LoggerFactory.getLogger(ContactCreationTest.class);
+
     //slf4j
     @BeforeMethod
     private void ensurePreconditions() {
-        if (!app.contact().isThereAContact()) {
+        if (app.db().contacts().size() == 0) {
             app.goTo().contactPage();
-            app.contact().createContact(new ContactData().withId(0).withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
+            app.contact().createContact(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
                     .withAddress("Poland").withGroup(null));
         }
     }
@@ -29,17 +30,12 @@ public class ContactDeletionTest extends TestBase {
     @Test
     public void testContactDeletion() {
         app.goTo().mainPage();
-        Contacts before;
-        if (!app.contact().isThereAContact()) {
-            before = null;
-        } else {
-            before = app.contact().c_all();
-        }
+        Contacts before = app.db().contacts();
         ContactData deletedContact = before.iterator().next();
         app.contact().delete(deletedContact);
         app.goTo().mainPage();
+        Contacts after = app.db().contacts();
 
-        Contacts after = app.contact().c_all();
         assertThat(before.withOut(deletedContact), equalTo(after));
     }
 
