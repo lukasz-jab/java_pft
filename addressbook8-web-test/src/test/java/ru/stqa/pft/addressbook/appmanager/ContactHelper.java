@@ -24,23 +24,32 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillContactForm(ContactData contactData, boolean creation) {
-        type(By.xpath("//input[@name='firstname']"), contactData.getFirstName());
-        type(By.xpath("//input[@name='lastname']"), contactData.getLastName());
-        type(By.xpath("//textarea[@name='address']"), contactData.getAddress());
-        type(By.xpath("//input[@name='home']"), contactData.getHomePhone());
-        type(By.xpath("//input[@name='mobile']"), contactData.getMobilePhone());
-        type(By.xpath("//input[@name='work']"), contactData.getWorkPhone());
-        //attach(By.cssSelector("input[name=photo]"), contactData.getPhoto());
-        //if (creation){
-        // new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-        //}else {
-        // Assert.assertFalse(isElementPresent(By.name("new_group")));
-        //}
+        if(creation) {
+            type(By.xpath("//input[@name='firstname']"), contactData.getFirstName());
+            type(By.xpath("//input[@name='lastname']"), contactData.getLastName());
+            type(By.xpath("//textarea[@name='address']"), contactData.getAddress());
+            type(By.xpath("//input[@name='home']"), contactData.getHomePhone());
+            type(By.xpath("//input[@name='mobile']"), contactData.getMobilePhone());
+            type(By.xpath("//input[@name='work']"), contactData.getWorkPhone());
+            //attach(By.cssSelector("input[name=photo]"), contactData.getPhoto());
+            //if (creation){
+            // new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            //}else {
+            // Assert.assertFalse(isElementPresent(By.name("new_group")));
+            //}
+        }else {
+            type(By.xpath("//input[@name='firstname']"), "new firstname");
+            type(By.xpath("//input[@name='lastname']"), "new  lastname");
+            type(By.xpath("//textarea[@name='address']"), "new address");
+            type(By.xpath("//input[@name='home']"), "1234556789");
+            type(By.xpath("//input[@name='mobile']"), "987654321");
+            type(By.xpath("//input[@name='work']"), "5555555555");
+        }
 
     }
 
     public void modify(ContactData contactEdited) {
-        editContact();
+        editContact(contactEdited.getId());
         fillContactForm((contactEdited), false);
         submitEditConact();
         contactCache = null;
@@ -67,8 +76,8 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
     }
 
-    public void editContact() {
-        click(By.xpath("//img[@title='Edit']"));
+    public void editContact(int id) {
+        click(By.xpath("//a[@href='edit.php?id="+id+"']"));
     }
 
     public void submitEditConact() {
