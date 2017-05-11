@@ -1,26 +1,29 @@
 [
   {
-    "firstname": "Name6",
-    "lastname": "Lastname2",
-    "address": "Address 8",
-    "homePhone": "858983",
-    "mobilePhone": "893576",
-    "workPhone": "846824"
-  },
-  {
-    "firstname": "Name1",
+    "firstname": "Name8",
     "lastname": "Lastname4",
-    "address": "Address 0",
-    "homePhone": "857082",
-    "mobilePhone": "404732",
-    "workPhone": "678536"
+    "address": "Address 6",
+    "homePhone": "995176",
+    "mobilePhone": "939387",
+    "workPhone": "548825",
+    "photo": "src\\test\\resources\\s.jpg"
   },
   {
-    "firstname": "Name4",
-    "lastname": "Lastname8",
-    "address": "Address 3",
-    "homePhone": "190669",
-    "mobilePhone": "656613",
-    "workPhone": "140938"
+    "firstname": "Name2",
+    "lastname": "Lastname9",
+    "address": "Address 5",
+    "homePhone": "486527",
+    "mobilePhone": "87644",
+    "workPhone": "748928",
+    "photo": "src\\test\\resources\\s.jpg"
+  },
+  {
+    "firstname": "Name2",
+    "lastname": "Lastname5",
+    "address": "Address 8",
+    "homePhone": "66924",
+    "mobilePhone": "226314",
+    "workPhone": "330180",
+    "photo": "src\\test\\resources\\s.jpg"
   }
 ]

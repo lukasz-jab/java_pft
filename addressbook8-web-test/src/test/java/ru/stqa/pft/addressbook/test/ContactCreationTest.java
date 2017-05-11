@@ -58,7 +58,7 @@ public class ContactCreationTest extends TestBase {
         }
     }
 
-    @Test(dataProvider = "validContactFromXML")
+    @Test(dataProvider = "validContactFromJSON")
     public void testContactCreation(ContactData contactAdded) {
         app.goTo().mainPage();
         Contacts before = app.db().contacts();

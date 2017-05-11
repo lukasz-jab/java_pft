@@ -3,8 +3,10 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
 
@@ -23,21 +25,41 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//input[@name='submit']"));
     }
 
+    public void addToGroup(ContactData contact, GroupData group) {
+        new Select(wd.findElement(By.xpath("//select[@name='group']"))).selectByVisibleText("[all]");
+        wd.findElement(By.xpath("//input[@id='" + contact.getId() + "']")).click();
+        new Select(wd.findElement(By.xpath("//select[@name='to_group']"))).selectByValue(String.valueOf(group.getId()));
+        wd.findElement(By.cssSelector("input[type=submit][name=add]")).click();
+        wd.findElement(By.linkText("home")).click();
+        contactCache = null;
+        GroupHelper.groupCache = null;
+    }
+
+    public void deleteGroupFromContact(ContactData contact, GroupData group) {
+        new Select(wd.findElement(By.xpath("//select[@name='group']"))).selectByValue(String.valueOf(group.getId()));
+        wd.findElement(By.xpath("//input[@id='" + contact.getId() + "']")).click();
+        wd.findElement(By.cssSelector("input[type=submit][name=remove]")).click();
+        wd.findElement(By.linkText("home")).click();
+        contactCache = null;
+        GroupHelper.groupCache = null;
+    }
+
     public void fillContactForm(ContactData contactData, boolean creation) {
-        if(creation) {
+        if (creation) {
             type(By.xpath("//input[@name='firstname']"), contactData.getFirstName());
             type(By.xpath("//input[@name='lastname']"), contactData.getLastName());
             type(By.xpath("//textarea[@name='address']"), contactData.getAddress());
             type(By.xpath("//input[@name='home']"), contactData.getHomePhone());
             type(By.xpath("//input[@name='mobile']"), contactData.getMobilePhone());
             type(By.xpath("//input[@name='work']"), contactData.getWorkPhone());
-            //attach(By.cssSelector("input[name=photo]"), contactData.getPhoto());
-            //if (creation){
-            // new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            attach(By.cssSelector("input[name=photo]"), contactData.getPhoto());
+            //if(
+            //new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups()
+            //                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       .iterator().next().getName());
             //}else {
             // Assert.assertFalse(isElementPresent(By.name("new_group")));
             //}
-        }else {
+        } else {
             type(By.xpath("//input[@name='firstname']"), "new firstname");
             type(By.xpath("//input[@name='lastname']"), "new  lastname");
             type(By.xpath("//textarea[@name='address']"), "new address");
@@ -77,7 +99,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void editContact(int id) {
-        click(By.xpath("//a[@href='edit.php?id="+id+"']"));
+        click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
     }
 
     public void submitEditConact() {

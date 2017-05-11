@@ -23,7 +23,7 @@ public class ContactDeletionTest extends TestBase {
         if (app.db().contacts().size() == 0) {
             app.goTo().contactPage();
             app.contact().createContact(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
-                    .withAddress("Poland").withGroup(null));
+                    .withAddress("Poland"));
         }
     }
 
@@ -37,6 +37,7 @@ public class ContactDeletionTest extends TestBase {
         Contacts after = app.db().contacts();
 
         assertThat(before.withOut(deletedContact), equalTo(after));
+        verifyContactListInUI();
     }
 
 }

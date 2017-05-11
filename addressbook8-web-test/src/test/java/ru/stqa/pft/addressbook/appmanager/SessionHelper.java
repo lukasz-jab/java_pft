@@ -2,6 +2,7 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 /**
@@ -9,6 +10,8 @@ import org.openqa.selenium.WebDriver;
  */
 public class SessionHelper extends HelperBase {
 
+
+    public WebDriverWait wait = new WebDriverWait(wd, 5);
 
     public SessionHelper(WebDriver wd) {
         super(wd);
@@ -19,5 +22,4 @@ public class SessionHelper extends HelperBase {
         type(By.name("pass"), password);
         click(By.xpath("//form[@id='LoginForm']/input[3]"));
     }
-
 }

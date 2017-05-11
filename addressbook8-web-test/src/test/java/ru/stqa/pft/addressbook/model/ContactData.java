@@ -7,6 +7,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by luk on 2017-03-27.
@@ -16,64 +18,60 @@ import java.io.File;
 @Table(name = "addressbook")
 public class ContactData {
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public Set<GroupData> groups = new HashSet<GroupData>();
     @XStreamOmitField
     @Id
     @Column(name = "id")
     private int id;
-
     @Expose
     @Column(name = "firstname")
     private String firstname;
-
     @Expose
     @Column(name = "lastname")
     private String lastname;
-
     @Expose
     @Column(name = "address")
     @Type(type = "text")
     private String address;
-
-    @Transient
-    private String group;
-
     @Expose
     @Column(name = "home")
     @Type(type = "text")
     private String homePhone;
-
     @Expose
     @Column(name = "mobile")
     @Type(type = "text")
     private String mobilePhone;
-
     @Expose
     @Column(name = "work")
     @Type(type = "text")
     private String workPhone;
-
     @Expose
     @Column(name = "email")
     @Type(type = "text")
     private String email;
-
     @Transient
     private String allPhones;
-
+    @Expose
     @Column(name = "photo")
     @Type(type = "text")
     private String photo;
 
-
-    public File getPhoto() {
-            if (photo != null) {
-                return new File(photo);
-            } else {
-                return null;
-            }
+    public ContactData inGroup(GroupData group) {
+        groups.add(group);
+        return this;
     }
 
-       public ContactData withPhoto(File photo) {
+    public File getPhoto() {
+        if (photo != null) {
+            return new File(photo);
+        } else {
+            return null;
+        }
+    }
+
+    public ContactData withPhoto(File photo) {
         this.photo = photo.getPath();
         return this;
     }
@@ -146,11 +144,6 @@ public class ContactData {
         return this;
     }
 
-    public ContactData withGroup(String group) {
-        this.group = group;
-        return this;
-    }
-
     public int getId() {
         return id;
     }
@@ -167,10 +160,9 @@ public class ContactData {
         return address;
     }
 
-    public String getGroup() {
-        return group;
+    public Groups getGroups() {
+        return new Groups(groups);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -198,17 +190,8 @@ public class ContactData {
                 "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", address='" + address + '\'' +
-                ", group='" + group + '\'' +
-                ", homePhone='" + homePhone + '\'' +
-                ", mobilePhone='" + mobilePhone + '\'' +
-                ", workPhone='" + workPhone + '\'' +
-                ", email='" + email + '\'' +
-                ", allPhones='" + allPhones + '\'' +
-                ", photo='" + photo + '\'' +
                 '}';
     }
-
 }
 
 

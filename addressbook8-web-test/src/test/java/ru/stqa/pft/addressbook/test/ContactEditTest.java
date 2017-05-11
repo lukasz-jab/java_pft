@@ -23,7 +23,7 @@ public class ContactEditTest extends TestBase {
         if (app.db().contacts().size() == 0) {
             app.goTo().contactPage();
             app.contact().createContact(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
-                    .withAddress("Poland").withGroup(null));
+                    .withAddress("Poland"));
         }
     }
 
@@ -38,5 +38,6 @@ public class ContactEditTest extends TestBase {
         app.goTo().mainPage();
         Contacts after = app.db().contacts();
         assertThat(before.withAdded(contactEdited.withId(id)), equalTo(after));
+        verifyContactListInUI();
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class GroupHelper extends HelperBase {
 
-    private Groups groupCache = null;
+    public static Groups groupCache = null;
 
     public GroupHelper(WebDriver wd) {
         super(wd);

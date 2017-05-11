@@ -29,7 +29,7 @@ public class ContactPhoneTest extends TestBase {
         if (app.db().contacts().size() == 0) {
             app.goTo().contactPage();
             app.contact().createContact(new ContactData().withFirstname("Grzegorz").withLastname("Brzęczyszczykiewicz")
-                    .withAddress("Poland").withGroup(null));
+                    .withAddress("Poland"));
         }
     }
 
@@ -54,8 +54,8 @@ public class ContactPhoneTest extends TestBase {
     }
 
     private String mergeContactData(ContactData contact) {
-        return Arrays.asList(contact.getFirstName(), contact.getLastName(), contact.getAddress(), "H:", contact.getHomePhone()
-                , "M:", contact.getMobilePhone(), "W:", contact.getWorkPhone(), contact.getEmail()
+        return Arrays.asList(contact.getFirstName(), contact.getLastName(), contact.getAddress(),contact.getHomePhone()
+                , contact.getMobilePhone(), contact.getWorkPhone(), contact.getEmail()
         )
                 .stream().filter(s -> !s.equals(""))
                 .map(ContactPhoneTest::cleaned)
@@ -70,6 +70,5 @@ public class ContactPhoneTest extends TestBase {
         String contactfromDetailPage = app.contact().getDetailPageData(randomContact.getId());
         assertThat(mergeContactData(randomContact), equalTo(cleaned(contactfromDetailPage)));
     }
-
 }
 
