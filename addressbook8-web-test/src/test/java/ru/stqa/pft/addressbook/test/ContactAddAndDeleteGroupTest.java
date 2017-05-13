@@ -1,7 +1,6 @@
 package ru.stqa.pft.addressbook.test;
 
 import org.hibernate.SessionFactory;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -45,9 +44,8 @@ public class ContactAddAndDeleteGroupTest extends TestBase {
         //Assert.assertTrue(group.getContacts().contains(contact));
 
         app.contact().deleteGroupFromContact(contact, group);
-        assertThat(group.getContacts(), org.hamcrest.core.IsNot.not(hasItem(contact)));
         assertThat(contact.getGroups(), org.hamcrest.core.IsNot.not(hasItem((group))));
-        //Assert.assertFalse(group.getContacts().contains(contact));
+        // Assert.assertFalse(group.getContacts().contains(contact));
     }
 
 
