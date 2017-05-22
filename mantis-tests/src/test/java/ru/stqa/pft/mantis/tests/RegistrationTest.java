@@ -1,7 +1,5 @@
 package ru.stqa.pft.mantis.tests;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.lanwen.verbalregex.VerbalExpression;
 import ru.stqa.pft.mantis.model.MailMessage;
@@ -15,16 +13,21 @@ import java.util.List;
  */
 public class RegistrationTest extends TestBase {
 
-    @BeforeMethod
+    // @BeforeMethod
     public void startMailServer() {
         app.mail().start();
     }
 
     @Test
-    public void testTegistration() throws IOException, MessagingException {
-        String emailAddress = "user1@localhost.localdomain";
-        app.registration().start("user1", emailAddress);
-        List<MailMessage> email = app.mail().waitForMail(2, 10000);
+    public void testRegistration() throws IOException, MessagingException {
+        long now = System.currentTimeMillis();
+        String user = String.format("user%s", now);
+        String password = "password";
+        String emailAddress = user + "@localhost.localdomain";
+        app.james().createUser(user, password);
+        app.registration().start("user" + System.currentTimeMillis(), emailAddress);
+        //List<MailMessage> email = app.mail().waitForMail(2, 10000);
+        List<MailMessage> email = app.james().waitForMail(user, password, 60000);
         String confirmationLink = findConfirmationLink(email, emailAddress);
         app.registration().finish(confirmationLink, "password");
     }
@@ -35,7 +38,7 @@ public class RegistrationTest extends TestBase {
         return regex.getText(mailMessage.text);
     }
 
-    @AfterMethod(alwaysRun = true)
+    // @AfterMethod(alwaysRun = true)
     public void stopMailServer() {
         app.mail().stop();
     }

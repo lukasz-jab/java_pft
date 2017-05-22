@@ -23,6 +23,9 @@ public class ApplicationManager {
     private RegistrationHelper registrationHelper;
     private FtpHelper ftp;
     private MailHelper mailHelper;
+    private JamesHelper jamesHelper;
+    private SessionHelper sessionHelper;
+    private NavigationHelper navigationHelper;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -46,8 +49,11 @@ public class ApplicationManager {
                 wd = new InternetExplorerDriver();
             }
             wd.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-
             wd.get(properties.getProperty("web.baseURL"));
+            sessionHelper = new SessionHelper(this);
+            sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
+            navigationHelper = new NavigationHelper(this);
+
         }
         return wd;
     }
@@ -87,4 +93,26 @@ public class ApplicationManager {
         }
         return mailHelper;
     }
+
+    public JamesHelper james() {
+        if (jamesHelper == null) {
+            jamesHelper = new JamesHelper(this);
+        }
+        return jamesHelper;
+    }
+
+    public SessionHelper sessionHelper() {
+        if (sessionHelper == null) {
+            sessionHelper = new SessionHelper(this);
+        }
+        return sessionHelper;
+    }
+
+    public NavigationHelper navigationHelper() {
+        if (navigationHelper == null) {
+            navigationHelper = new NavigationHelper(this);
+        }
+        return navigationHelper;
+    }
+
 }

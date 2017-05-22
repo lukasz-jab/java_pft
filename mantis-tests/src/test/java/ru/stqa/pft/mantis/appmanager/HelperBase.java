@@ -13,7 +13,6 @@ import java.io.File;
  */
 public class HelperBase {
 
-
     protected ApplicationManager app;
     protected WebDriver wd;
 
