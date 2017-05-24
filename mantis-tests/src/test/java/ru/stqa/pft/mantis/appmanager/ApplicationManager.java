@@ -26,6 +26,7 @@ public class ApplicationManager {
     private JamesHelper jamesHelper;
     private SessionHelper sessionHelper;
     private NavigationHelper navigationHelper;
+    private SoapHelper soapHelper;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -53,6 +54,7 @@ public class ApplicationManager {
             sessionHelper = new SessionHelper(this);
             sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
             navigationHelper = new NavigationHelper(this);
+
 
         }
         return wd;
@@ -114,5 +116,10 @@ public class ApplicationManager {
         }
         return navigationHelper;
     }
-
+    public SoapHelper soap(){
+        if(soapHelper == null){
+            soapHelper = new SoapHelper(this);
+        }
+        return soapHelper;
+    }
 }
